@@ -3,8 +3,9 @@
   <div id="News" class="AllNews">
     <h1> All the News </h1>
     <button @click="getAll()"></button>
+    <input type="text" v-model="search" placeholder="search"/>
     <div id="container"></div>
-    <ul id="post" v-for=" (post,index) in Allposts" :key="index">
+    <ul id="post" v-for=" (post,index) in fiteredposts" :key="index">
     <li>{{post.text}}</li>
     <br/>
     <img id="pictureofNews" v-bind:src="post.content"/>
@@ -20,6 +21,7 @@ export default {
   data() {
     return{
       Allposts:[],
+       search:"", 
     }
  
   },
@@ -29,6 +31,11 @@ export default {
       axios.get('http://localhost:3000/getAll').then((result) => {this.Allposts=result.data;console.log(this.Allposts)}).catch((err) => console.log(err))
     }
   },
+    computed:{
+  fiteredposts:function (){
+    return this.Allposts.filter((post)=>{return post.theme.match(this.search,)})
+  }
+ }
 }
 </script>
 
